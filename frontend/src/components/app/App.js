@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as userActions from '../../actions/user';
 
-import './App.css';
+import './app.css';
 
 class App extends Component {
   componentDidMount() {
     if (this.props.loggedIn) {
-      fetchUserLists();
+      this.props.fetchUserLists();
     }
   }
 
@@ -17,10 +18,9 @@ class App extends Component {
 
     const loggedInView = (
     <ul>
-      { 
-        userLists.map((list, index) => {
-          return <li key={index} >{list.title} </li>;
-        })
+      { this.props.userLists && this.props.userLists.map((list, index) => {
+        return <li key={index} >{list.title} </li>;
+      })
       }
     </ul>
     );
@@ -30,7 +30,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Timeboxed  |  Wunderlist</h1>
         </header>
-        { this.props.loggedIn ? loggedInView : loginView };
+        { this.props.loggedIn ? loggedInView : loginView }
       </div>
     );
   }
@@ -38,6 +38,8 @@ class App extends Component {
 
 App.propTypes = {
   loggedIn: PropTypes.bool,
+  fetchUserLists: PropTypes.func,
+  userLists: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
