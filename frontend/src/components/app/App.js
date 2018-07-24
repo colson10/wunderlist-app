@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as userActions from '../../actions/user';
+import ListItem from '../list-item/list-item';
 
-import './app.css';
+import './App.css';
 
 class App extends Component {
   componentDidMount() {
     if (this.props.loggedIn) {
+      console.log('logged in?', this.props.loggedIn);
       this.props.fetchUserLists();
     }
   }
@@ -17,12 +19,12 @@ class App extends Component {
     <h3><a href="https://www.wunderlist.com/oauth/authorize?client_id=450fc863964df672ed75&redirect_uri=http://localhost:7000/oauth/wunderlist&state=lksjdf;lkj092uf9j2flkj">Wunderlist Login</a></h3></div>;
 
     const loggedInView = (
-    <ul>
-      { this.props.userLists && this.props.userLists.map((list, index) => {
-        return <li key={index} >{list.title} </li>;
+      <ul>
+      { this.props.userLists && this.props.userLists.map((list) => {
+        return <ListItem key={list.id} list={list}/>;
       })
       }
-    </ul>
+      </ul>
     );
 
     return (
@@ -44,6 +46,7 @@ App.propTypes = {
 
 const mapStateToProps = state => ({
   loggedIn: !!state.token,
+  userLists: state.userLists,
 });
 
 const mapDispatchToProps = dispatch => ({
